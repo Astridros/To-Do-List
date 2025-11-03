@@ -1,0 +1,280 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+:root{
+    --color-verde: rgb(42, 193, 22);
+}
+
+body{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: url(../images/pizarra.jpg) no-repeat center center/cover fixed;
+}
+
+/*Contenedor principal*/
+.contenedor{
+    width: 700px;
+    background-color: rgba(255, 255, 255, 0.324);
+    border-radius: 10px;
+    border: solid 4px var(--color-verde);
+    padding: 30px;
+    box-shadow: 0 10px 25px black; 
+}
+
+.contenedor:hover {
+  transform: scale(1.05); 
+}
+
+/*Contenedor de los filtros*/
+.contenedor-filtros{
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    background-color: white;
+    padding: 10px;
+    margin: 15px auto; 
+    border-radius: 10px;
+    border: solid 3px black;
+    width: 100%; 
+    background-color: rgb(185, 185, 145);
+}
+
+/*Contenedor de las tareas*/
+.contenedor-tareas{
+    display: flex;
+    align-items: center;
+    background-color: rgb(185, 185, 145);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0 auto;
+    border: solid 3px black;
+    width: 100%; 
+    flex-direction: column;
+}
+
+h1{
+    margin: 15px;
+    font-size: 50px;
+}
+
+/*Input*/
+#agregar{
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    border: solid 3px rgb(18, 81, 10);
+    width: 75%;
+}
+
+#agregar:hover{
+    border: solid var(--color-verde);
+}
+
+/*Boton de agregar tarea*/
+#btn-agregar{
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--color-verde);
+    border: solid 3px rgb(18, 81, 10);
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#btn-agregar:hover{
+    background-color: rgb(35, 154, 19);
+    border: solid 3px var(--color-verde);
+    transform: scale(1.05); 
+}
+
+.contenedor-tareas ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+/*Tareas*/
+.tarea{
+    width: 100%;
+    min-height: 70px;
+    font-size: 18px;
+    padding: 10px;
+    margin-top: 10px;
+    color: white;
+    background-color: rgba(102, 179, 92, 0.847);
+    border-radius: 10px;
+    border: solid 3px rgb(102, 179, 92);;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    gap: 10px; 
+    text-align: left;
+}
+
+/*Tareas completadas*/
+.tarea.completada{
+    text-decoration: line-through;
+    background-color: rgba(102, 179, 92, 0.459);
+    border: none;
+}
+
+.tarea p{
+    font-weight: bold;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+.tarea-check {
+  accent-color: rgb(18, 81, 10);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0; 
+  margin-right: 0;
+}
+
+/*Iconos para las tareas*/
+i{
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.icono-eliminar{
+    color: white;
+    width: 20px;
+}
+
+.icono-editar{
+    color: yellow;
+    width: 30px;
+}
+
+.icono-eliminar:hover,
+.icono-editar:hover{
+    background-color: rgba(255, 255, 255, 0.523);
+    border-radius: 10px;
+}
+
+.tarea .iconos {
+  margin-left: auto; 
+}
+
+/*Filtros*/
+.filtros {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-filtro {
+    padding: 10px;
+    margin: 8px;
+    border-radius: 10px;
+    background-color: var(--color-verde);
+    border: solid 3px rgb(18, 81, 10); 
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    min-width: 100px;
+}
+
+.btn-filtro:hover {
+    background-color:rgb(13, 68, 8);
+    transform: scale(1.05); 
+    color: white;
+}
+
+.btn-filtro.activo {
+    background-color:rgb(13, 68, 8);
+    transform: scale(1.05); 
+    color: white;
+}
+
+/*Contador*/
+.contador {
+    font-weight: bold;
+    margin: 8px;
+}
+
+/*Boton de limpiar completadas*/
+#btn-limpiar {
+  padding: 8px;
+  border-radius: 10px;
+  background-color: crimson;
+  border: solid 3px darkred;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  margin: 8px;
+}
+
+#btn-limpiar:hover {
+  background-color: darkred;
+  transform: scale(1.05);
+  
+}
+
+.editar-input {
+  width: 100%;
+  padding: 5px;
+  font-size: 18px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .contenedor {
+    width: 95%;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 36px;
+  }
+
+  #agregar {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .contenedor-filtros {
+    flex-direction: column; 
+    gap: 10px; 
+    padding: 15px;
+    text-align: center;
+  }
+
+  .filtros {
+    flex-wrap: wrap; 
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .btn-filtro {
+    min-width: 90px;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .contador {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+
+  #btn-limpiar {
+    width: 100%;
+    font-size: 14px;
+  }
+}
