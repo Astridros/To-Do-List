@@ -1,8 +1,4 @@
-# To-Do List con CI/CD (DevOps ITLA)
-
-![Build Status](https://github.com/Astridros/To-Do-List-DevOps/actions/workflows/ci.yml/badge.svg)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Status](https://img.shields.io/badge/status-En%20Desarrollo-blue)
+# To-Do List con CI/CD (DevOps)
 
 ## Descripción del Proyecto
 Aplicación web interactiva que permite gestionar tareas pendientes (**To-Do List**), desarrollada con **HTML, CSS y JavaScript**.  
