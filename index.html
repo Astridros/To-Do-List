@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="images/tarea.png">
+    <title>To-Do List</title>
+</head>
+<body>
+    <main class="contenedor">
+        <div class="contenedor-agregar">
+            <h1>Tareas📑</h1>
+            <input id="agregar" placeholder="Ingresa tu tarea...">
+            <button id="btn-agregar" type="submit">Agregar Tarea</button>
+        </div>
+        <div class="contenedor-filtros">
+            <div class="filtros">
+                <button id="filtro-todos" class="btn-filtro activo">Todos</button>
+                <button id="filtro-pendientes" class="btn-filtro">Pendientes</button>
+                <button id="filtro-completadas" class="btn-filtro">Completadas</button>
+            </div>
+
+            <div class="contador">
+                <span id="contador-tareas">0</span> Tareas pendientes
+            </div>
+            <button id="btn-limpiar">Limpiar completadas</button>
+        </div>
+        <div class="contenedor-tareas">
+            <h2>Tareas registradas</h2>
+            <ul id="lista-tareas"></ul>
+        </div>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+</html>
