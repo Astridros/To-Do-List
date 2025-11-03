@@ -1,32 +1,21 @@
-const input = document.getElementById("agregar");
-const btnAgregar = document.getElementById("btn-agregar");
-const lista = document.querySelector("ul");
-const btnLimpiar = document.getElementById("btn-limpiar");
-const contador = document.getElementById("contador-tareas");
-const btnTodos = document.getElementById("filtro-todos");
-const btnPendientes = document.getElementById("filtro-pendientes");
-const btnCompletadas = document.getElementById("filtro-completadas");
+import { countPendientes, normalizeDescripcion } from './utils.js';
 
 let tareas = [];
+
+function el(id) {
+  return document.getElementById(id);
+}
 
 function guardarTareas() {
   localStorage.setItem("tareas", JSON.stringify(tareas));
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const tareasGuardadas = JSON.parse(localStorage.getItem("tareas")) || [];
-  tareas = tareasGuardadas.filter(tarea => tarea.descripcion && tarea.descripcion.trim() !== "");
-  tareas.forEach(tarea => renderTarea(tarea));
-  guardarTareas(); 
-  actualizarContador();
-});
-
 function agregarTarea() {
-  const descripcionTarea = input.value.trim();
+  const input = el("agregar"); 
+  const descripcionTarea = normalizeDescripcion(input.value);
   if (!descripcionTarea) {
-  alert("Ingresa una tarea primero.");
-  return;
-}
+    return;
+  }
 
   const tareaNueva = {
     id: Date.now(),
@@ -41,13 +30,8 @@ function agregarTarea() {
   actualizarContador();
 }
 
-btnAgregar.addEventListener("click", agregarTarea);
-input.addEventListener("keydown", e => {
-  if (e.key === "Enter") agregarTarea();
-});
-
-// Funcion para añadir la tarea con el elemneto li
 function renderTarea(tarea) {
+  const lista = el("lista-tareas");
   const liNuevo = document.createElement("li");
   liNuevo.classList.add("tarea");
   liNuevo.dataset.id = tarea.id;
@@ -84,21 +68,19 @@ function renderTarea(tarea) {
   lista.appendChild(liNuevo);
 }
 
-// Eliminar tarea
 function eliminarTarea(e) {
-  const tareaElemento = e.target.parentNode.parentNode;
+  const tareaElemento = e.target.closest("li");
   const id = parseInt(tareaElemento.dataset.id);
-  tareas = tareas.filter(tarea => tarea.id !== id);
+  tareas = tareas.filter(t => t.id !== id);
   guardarTareas();
   tareaElemento.remove();
   actualizarContador();
 }
 
-// Editar tarea
 function editarTarea(e) {
-  const tareaElemento = e.target.parentNode.parentNode;
+  const tareaElemento = e.target.closest("li");
   const id = parseInt(tareaElemento.dataset.id);
-  const tarea = tareas.find(tarea => tarea.id === id);
+  const tarea = tareas.find(t => t.id === id);
   const textoElemento = tareaElemento.querySelector("p");
 
   const inputEditar = document.createElement("input");
@@ -123,30 +105,22 @@ function editarTarea(e) {
       nuevoTextoElemento.textContent = nuevoTexto;
       tareaElemento.replaceChild(nuevoTextoElemento, inputEditar);
     } else {
-      alert("La tarea no puede quedar vacía.");
     }
   }
 }
 
-// Contador
 function actualizarContador() {
-  const pendientes = tareas.filter(tarea => !tarea.completada).length;
+  const contador = el("contador-tareas"); 
+  const pendientes = countPendientes(tareas);
   contador.textContent = pendientes;
 }
 
-btnLimpiar.addEventListener("click", () => {
-  tareas = tareas.filter(tarea => !tarea.completada);
-  document.querySelectorAll(".tarea.completada").forEach(completada => completada.remove());
-  guardarTareas();
-  actualizarContador();
-});
-
-// Filtros
-btnTodos.addEventListener("click", () => mostrarTareas("todos"));
-btnPendientes.addEventListener("click", () => mostrarTareas("pendientes"));
-btnCompletadas.addEventListener("click", () => mostrarTareas("completadas"));
-
 function mostrarTareas(filtro) {
+  const lista = el("lista-tareas");
+  const btnTodos = el("filtro-todos");
+  const btnPendientes = el("filtro-pendientes");
+  const btnCompletadas = el("filtro-completadas");
+
   lista.innerHTML = "";
   tareas.forEach(tarea => {
     if (
@@ -158,10 +132,56 @@ function mostrarTareas(filtro) {
     }
   });
 
-  document.querySelectorAll(".btn-filtro").forEach(boton => boton.classList.remove("activo"));
+  document.querySelectorAll(".btn-filtro").forEach(b => b.classList.remove("activo"));
   if (filtro === "todos") btnTodos.classList.add("activo");
   if (filtro === "pendientes") btnPendientes.classList.add("activo");
   if (filtro === "completadas") btnCompletadas.classList.add("activo");
 
   actualizarContador();
+}
+
+function inicializarApp() {
+  const input = el("agregar");
+  const btnAgregar = el("btn-agregar");
+  const lista = el("lista-tareas");
+  const btnLimpiar = el("btn-limpiar");
+  const btnTodos = el("filtro-todos");
+  const btnPendientes = el("filtro-pendientes");
+  const btnCompletadas = el("filtro-completadas");
+
+  if (!input || !btnAgregar || !lista) {
+    setTimeout(inicializarApp, 50);
+    return;
+  }
+
+  if (!btnAgregar.dataset.listenerAdded) {
+    btnAgregar.addEventListener("click", agregarTarea);
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") agregarTarea();
+    });
+
+    btnLimpiar.addEventListener("click", () => {
+      tareas = tareas.filter(t => !t.completada);
+      document.querySelectorAll(".tarea.completada").forEach(c => c.remove());
+      guardarTareas();
+      actualizarContador();
+    });
+
+    btnTodos.addEventListener("click", () => mostrarTareas("todos"));
+    btnPendientes.addEventListener("click", () => mostrarTareas("pendientes"));
+    btnCompletadas.addEventListener("click", () => mostrarTareas("completadas"));
+    btnAgregar.dataset.listenerAdded = "true";
+  }
+
+  const tareasGuardadas = JSON.parse(localStorage.getItem("tareas")) || [];
+  tareas = tareasGuardadas.filter(t => t.descripcion && t.descripcion.trim());
+  tareas.forEach(t => renderTarea(t));
+  guardarTareas();
+  actualizarContador();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", inicializarApp);
+} else {
+  setTimeout(inicializarApp, 0);
 }
